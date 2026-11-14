@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+		<title>Explorar mapa 3D – Aldea de tumbas</title>
+		<link rel="icon" href="../favicon.ico" />
+		<link rel="stylesheet" href="css/style.css" />
+		<script type="importmap">
+			{ "imports": { "three": "./vendor/three.module.min.js" } }
+		</script>
+	</head>
+	<body>
+		<canvas id="view"></canvas>
+
+		<!-- Pantalla de inicio -->
+		<section id="start" class="overlay">
+			<div class="card">
+				<div class="tag">MODO EXPERIMENTAL · PRIMERA PERSONA</div>
+				<h1>Explorar mapa 3D</h1>
+				<img id="mapThumb" class="thumb" alt="Mapa original 2D" />
+				<h2 id="mapName">…</h2>
+				<p id="mapPick" class="muted"></p>
+				<div id="loading">
+					<div class="bar"><div id="loadBar"></div></div>
+					<p id="loadText" class="muted">Cargando…</p>
+				</div>
+				<button id="btnEnter" class="big" disabled>CARGANDO…</button>
+				<div class="controls">
+					<div class="desk">
+						<b>Computadora</b>
+						<span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> caminar</span>
+						<span><kbd>Ratón</kbd> mirar</span>
+						<span><kbd>Espacio</kbd> saltar</span>
+						<span><kbd>Shift</kbd> correr</span>
+						<span><kbd>E</kbd> interactuar</span>
+						<span><kbd>+</kbd><kbd>−</kbd> velocidad</span>
+						<span><kbd>Esc</kbd>/<kbd>P</kbd> pausa</span>
+					</div>
+					<div class="mob">
+						<b>Móvil</b>
+						<span>Joystick: caminar</span>
+						<span>Arrastrar a la derecha: mirar</span>
+						<span>Botones: saltar, correr, usar</span>
+					</div>
+				</div>
+				<button class="link" data-back2d>← Volver al juego 2D</button>
+			</div>
+		</section>
+
+		<!-- HUD -->
+		<section id="hud" hidden>
+			<div id="crosshair"></div>
+			<div id="vignette"></div>
+			<div class="topbar">
+				<div class="pill">
+					<span class="ico">❤</span>
+					<div class="hpbar"><div id="hpFill"></div></div>
+				</div>
+				<div class="pill"><img src="../images/interface/Sun.png" alt="" class="sunico" /><span id="sunCount">50</span></div>
+				<div class="pill">🧟 <span id="zCount">0</span></div>
+				<div class="pill">🏃 <span id="speedVal">×1</span></div>
+				<button class="pill btn" data-back2d title="Volver al juego 2D">2D ↩</button>
+			</div>
+			<div id="prompt" hidden><kbd class="ekey">E</kbd> <span id="promptText"></span></div>
+			<div id="toast"></div>
+
+			<!-- controles táctiles -->
+			<div id="touchLook"></div>
+			<div id="joystick"><div id="joyKnob"></div></div>
+			<div class="tbtns">
+				<button class="tbtn" id="btnUse">USAR</button>
+				<button class="tbtn" id="btnRun">CORRER</button>
+				<button class="tbtn big" id="btnJump">SALTAR</button>
+			</div>
+			<button class="tbtn" id="btnPause">❚❚</button>
+		</section>
+
+		<!-- Panel de examen / almanaque -->
+		<section id="panel" class="overlay" hidden>
+			<div class="card wide">
+				<h2 id="panelTitle"></h2>
+				<div id="panelBody"></div>
+				<button id="panelClose" class="big">CERRAR (E)</button>
+			</div>
+		</section>
+
+		<!-- Pausa -->
+		<section id="pause" class="overlay" hidden>
+			<div class="card">
+				<h1>Pausa</h1>
+				<button id="btnResume" class="big">CONTINUAR</button>
+				<button id="btnRestart">Reiniciar exploración</button>
+				<button id="btnMute">🔊 Sonido: sí</button>
+				<button data-back2d>← Volver al juego 2D</button>
+			</div>
+		</section>
+
+		<!-- Muerte -->
+		<section id="death" class="overlay red" hidden>
+			<div class="card">
+				<h1>¡LOS ZOMBIS SE COMIERON TU CEREBRO!</h1>
+				<button id="btnRespawn" class="big">VOLVER A INTENTARLO</button>
+				<button data-back2d>← Volver al juego 2D</button>
+			</div>
+		</section>
+
+		<footer id="credit">
+			Plants vs. Zombies: MODDED © ROBINET13 &amp; Clay · PolyForm Noncommercial 1.0.0 · Recursos de Plants vs. Zombies © PopCap Games / EA
+		</footer>
+
+		<noscript>Este modo necesita JavaScript y WebGL.</noscript>
+		<script type="module" src="js/main.js"></script>
+	</body>
+</html>

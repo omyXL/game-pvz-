@@ -9,9 +9,14 @@
 	},
 	"overrides": [
 		{
-			"files": ["**/*.{js,mjs,cjs}"],
+			"files": [
+				"**/*.{js,mjs,cjs}"
+			],
 			"rules": {
-				"curly": ["error", "all"],
+				"curly": [
+					"error",
+					"all"
+				],
 				"prefer-spread": "error",
 				"prefer-rest-params": "error",
 				"no-sequences": "error",
@@ -23,7 +28,10 @@
 				"no-useless-computed-key": "error",
 				"no-useless-concat": "error",
 				"no-useless-return": "error",
-				"complexity": ["warn", 15],
+				"complexity": [
+					"warn",
+					15
+				],
 				"prefer-object-spread": "warn",
 				"no-lonely-if": "warn",
 				"no-extra-boolean-cast": "warn"
@@ -32,5 +40,8 @@
 				"browser": true
 			}
 		}
+	],
+	"ignorePatterns": [
+		"game/explore3d/vendor/**"
 	]
 }

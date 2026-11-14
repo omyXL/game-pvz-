@@ -1488,3 +1488,29 @@ body.game-paused #cover {
 #debugMenu * {
 	font-family: "Courier New", Courier, monospace !important;
 }
+
+/* Botón del modo experimental "Explorar mapa 3D" (game/explore3d/) */
+#btnExplore3D {
+	position: absolute;
+	left: 228px;
+	top: 548px;
+	padding: 7px 16px;
+	border-radius: 12px;
+	border: 3px solid #24601a;
+	background: linear-gradient(#8ee36b, #3f9b2c);
+	color: #fff;
+	font-family: "briannetod", sans-serif;
+	font-size: 17px;
+	letter-spacing: 1px;
+	text-shadow: 0 2px 0 #24601a;
+	box-shadow:
+		0 4px 0 #1b4a13,
+		0 6px 14px rgba(0, 0, 0, 0.5);
+	cursor: url(images/interface/Pointer.cur), pointer;
+	z-index: 5;
+	user-select: none;
+}
+#btnExplore3D:hover {
+	filter: brightness(1.12);
+	transform: translateY(-1px);
+}

@@ -16,5 +16,12 @@
 	"singleAttributePerLine": false,
 	"singleQuote": false,
 	"trailingComma": "es5",
-	"ignorePatterns": ["game/js/pako.js", "game/js/html2canvas.js", "game/js/msgpack.min.js", ".github/workflows", "pnpm-lock.yaml"]
+	"ignorePatterns": [
+		"game/js/pako.js",
+		"game/js/html2canvas.js",
+		"game/js/msgpack.min.js",
+		".github/workflows",
+		"pnpm-lock.yaml",
+		"game/explore3d/vendor/**"
+	]
 }
