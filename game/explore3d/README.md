@@ -63,6 +63,17 @@ Tampoco existe una animación de "recibir daño": igual que en el juego 2D, el z
 - **Plantas y zombis:** panel con descripción, estado y sus animaciones GIF originales.
 - **Montículo y carretilla:** examinar.
 
+## Hoja Gruñona (planta 3D añadida)
+
+Es un modelo 3D aportado por el usuario y generado con Meshy AI. No forma parte del juego original.
+
+- **Archivo:** `models/grumpy_leafling.glb`. El OBJ original (53 MB, 531.000 triángulos, textura PNG de 2048²) se convirtió con `obj2gltf` y `gltf-transform` (weld, simplify, resize, webp, quantize). Quedó en **809 KB**, con 31.882 triángulos y una textura WebP de 1024².
+- **Dónde está:** un brote brillante al final del carril de losas, entre el jardín y el cementerio.
+- **Cómo se usa:** pulsa **E** sobre el brote y la Hoja Gruñona sale de la tierra. Está **6 segundos**. Cada 1,2 s lanza una onda de viento (anillo verde) que **empuja hacia atrás** al jugador y a los zombis que estén a menos de 4,2 m. Los zombis salen despedidos con un pequeño salto y quedan aturdidos un momento.
+- Mientras está fuera gira hacia el jugador o el zombi más cercano. Después se encoge y vuelve a la tierra, y el brote tarda **4 s** en recargarse.
+- El modelo no trae animaciones: la aparición, el balanceo, el soplido y la desaparición se animan por código.
+- Los valores se ajustan en `LEAFLING`, en `js/entities/leafling.js`: duración, recarga, alcance y fuerza.
+
 ## Comportamiento
 
 - **Zombis:** deambulan junto a su tumba. Si ven al jugador (unos 17 m) lo persiguen y lo muerden. Pierden la cabeza a media vida y mueren con su animación. El cono y el cubo absorben daño. Reaparecen desde las tumbas o desde los bordes del mapa, así que pueden llegar desde varias direcciones.

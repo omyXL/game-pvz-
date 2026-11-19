@@ -19,6 +19,7 @@ import { ProjectilePool } from "./entities/projectiles.js";
 import { Zombie, loadZombieAnims } from "./entities/zombie.js";
 import { Plant, loadPlantAnims } from "./entities/plant.js";
 import { AnimatedSprite3D } from "./sprite.js";
+import { LeaflingSpot, loadLeaflingModel } from "./entities/leafling.js";
 
 const MAX_ZOMBIES = 7;
 
@@ -68,6 +69,7 @@ class Game {
 		this.zombies = [];
 		this.plants = [];
 		this.suns = [];
+		this.leaflings = []; // brotes de la Hoja Gruñona
 		this.sunCount = 50;
 		this.respawnQueue = [];
 		this.zombiePool = {}; // sprites de zombi libres por tipo (object pooling)
@@ -118,6 +120,10 @@ class Game {
 		}
 		this.projectiles = new ProjectilePool(this, 70);
 		await this.placePlants();
+		// Hoja Gruñona: brote al final del carril de losas (entre el jardín y el cementerio)
+		this.ui.loading(0.97, "Modelo 3D: Hoja Gruñona…");
+		const leafModel = await loadLeaflingModel();
+		this.leaflings.push(new LeaflingSpot(this, leafModel, this.world.cell(8, 2)));
 		this.spawnInitialZombies();
 		this.player.spawn(this.world.playerStart, this.world.playerYaw);
 		// primer render para compilar shaders antes de entrar
@@ -361,6 +367,9 @@ class Game {
 		}
 		this.zombies = this.zombies.filter((z) => !z.removed);
 		this.projectiles.update(dt);
+		for (const l of this.leaflings) {
+			l.update(dt);
+		}
 		this.effects.update(dt, this.camera);
 		this._updateSuns(dt);
 		this._updateTombs(dt);

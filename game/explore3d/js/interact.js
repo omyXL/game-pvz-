@@ -38,6 +38,9 @@ export class Interaction {
 				list.push(s.interaction);
 			}
 		}
+		for (const l of g.leaflings) {
+			list.push(l.interaction);
+		}
 		return list;
 	}
 

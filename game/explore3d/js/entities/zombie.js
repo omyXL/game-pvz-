@@ -58,6 +58,8 @@ export class Zombie {
 		this.armor = this.def.armor || 0;
 		this.hasHead = true;
 		this.slow = 0;
+		this.push = new THREE.Vector3(); // empujón recibido
+		this.stunT = 0; // aturdido tras un empujón
 		this.biteTimer = 0;
 		this.groanTimer = 3 + Math.random() * 8;
 		this.wanderTimer = 0;
@@ -167,6 +169,36 @@ export class Zombie {
 		this._anim(this.state === "attack" ? "attack" : "walk", { restart: true });
 	}
 
+	/** Empuja al zombi en la dirección (dx, dz): sale despedido y queda aturdido un momento. */
+	knockback(dx, dz, strength) {
+		if (!this.alive || this.state === "rise") {
+			return;
+		}
+		const len = Math.hypot(dx, dz) || 1;
+		this.push.set((dx / len) * strength, 0, (dz / len) * strength);
+		this.stunT = 0.9;
+		this.hopT = 0;
+		this.sprite.flash = 0.6;
+		if (this.state === "attack") {
+			this.state = "chase";
+			this._anim("walk");
+		}
+	}
+
+	_pushed(dt) {
+		this.stunT -= dt;
+		this.hopT += dt;
+		this.pos.x += this.push.x * dt;
+		this.pos.z += this.push.z * dt;
+		this.game.physics.resolve(this.pos, 0.42, this.pos.y, 1.9);
+		this.push.multiplyScalar(Math.exp(-3.5 * dt));
+		// pequeño salto al salir despedido
+		this.yOffset = Math.max(0, Math.sin(Math.min(1, this.hopT / 0.5) * Math.PI) * 0.5);
+		if (this.stunT <= 0) {
+			this.yOffset = 0;
+		}
+	}
+
 	/** Muerte con su animación original (o "BoomDie" si explota). */
 	die(boom = false) {
 		if (!this.alive) {
@@ -235,7 +267,11 @@ export class Zombie {
 			case "wander":
 			case "chase":
 			case "attack":
-				this._think(dt, speedMul, camera);
+				if (this.stunT > 0) {
+					this._pushed(dt);
+				} else {
+					this._think(dt, speedMul, camera);
+				}
 				break;
 			case "dying":
 				this.deathT += dt;

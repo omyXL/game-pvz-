@@ -21,6 +21,7 @@ export class Player {
 		this.stepT = 0;
 		this.shake = 0;
 		this.hurtT = 0;
+		this.push = new THREE.Vector3(); // empujón recibido (p. ej. de la Hoja Gruñona)
 		this.speedMul = 1;
 		camera.rotation.order = "YXZ";
 	}
@@ -29,6 +30,7 @@ export class Player {
 		this.pos.copy(pos);
 		this.pos.y = this.game.physics.groundAt(pos.x, pos.z, 50);
 		this.vel.set(0, 0, 0);
+		this.push.set(0, 0, 0);
 		this.yaw = yaw;
 		this.pitch = -0.08;
 		this.hp = PLAYER.maxHp;
@@ -48,6 +50,19 @@ export class Player {
 			this.alive = false;
 			this.game.onPlayerDied();
 		}
+	}
+
+	/**
+	 * Empuja al jugador en la dirección (dx, dz) con una fuerza en m/s y un pequeño salto.
+	 * El empujón se suma al movimiento y se frena poco a poco; respeta las colisiones.
+	 */
+	knockback(dx, dz, strength, up = 3) {
+		const len = Math.hypot(dx, dz) || 1;
+		this.push.x += (dx / len) * strength;
+		this.push.z += (dz / len) * strength;
+		this.vel.y = Math.max(this.vel.y, up);
+		this.onGround = false;
+		this.shake = 0.3;
 	}
 
 	update(dt, inp) {
@@ -79,12 +94,16 @@ export class Player {
 		this.vel.y -= PLAYER.gravity * dt;
 		const ph = this.game.physics;
 		// moverse en pasos pequeños para no atravesar muros delgados
-		const steps = Math.max(1, Math.ceil((Math.hypot(this.vel.x, this.vel.z) * dt) / 0.2));
+		const mx = this.vel.x + this.push.x;
+		const mz = this.vel.z + this.push.z;
+		const steps = Math.max(1, Math.ceil((Math.hypot(mx, mz) * dt) / 0.2));
 		for (let i = 0; i < steps; i++) {
-			this.pos.x += (this.vel.x * dt) / steps;
-			this.pos.z += (this.vel.z * dt) / steps;
+			this.pos.x += (mx * dt) / steps;
+			this.pos.z += (mz * dt) / steps;
 			ph.resolve(this.pos, PLAYER.radius, this.pos.y, 1.8, PLAYER.stepHeight);
 		}
+		// el empujón se frena rápido (más en el suelo que en el aire)
+		this.push.multiplyScalar(Math.exp(-(this.onGround ? 5 : 1.5) * dt));
 		this.pos.y += this.vel.y * dt;
 		const ground = ph.groundAt(this.pos.x, this.pos.z, this.pos.y, PLAYER.radius, PLAYER.stepHeight);
 		if (this.pos.y <= ground) {

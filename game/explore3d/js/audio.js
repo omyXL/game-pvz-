@@ -30,6 +30,10 @@ const SOUNDS = {
 	step: ["grassstep"],
 	gravebuster: ["gravebusterchomp"],
 	laugh: ["evillaugh"],
+	grow: ["plantgrow"],
+	gust: ["blover"],
+	boing: ["boing"],
+	vanish: ["shoop"],
 };
 
 export class Audio3D {
